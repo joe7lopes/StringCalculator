@@ -1,6 +1,8 @@
 package com.calculator.services;
 
 import com.calculator.extractors.NumbersExtractorImpl;
+import com.calculator.filters.NumbersFilter;
+import com.calculator.validators.NumbersValidator;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -17,6 +19,7 @@ import java.util.List;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,14 +28,17 @@ public class StringCalculatorServiceImplTest {
     private StringCalculatorServiceImpl testee;
     @Mock
     private NumbersExtractorImpl numbersExtractor;
-
+    @Mock
+    private NumbersFilter filter;
+    @Mock
+    private NumbersValidator validator;
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() {
-        testee = new StringCalculatorServiceImpl(numbersExtractor);
+        testee = new StringCalculatorServiceImpl(numbersExtractor, validator, filter);
     }
 
     @Test
@@ -48,14 +54,18 @@ public class StringCalculatorServiceImplTest {
     @Test
     public void givenOneNumberThenReturnThatNumber() {
         String input = "1";
-        when(numbersExtractor.extract(input)).thenReturn(singletonList(1));
+        List<Integer> numbers = singletonList(1);
+        when(numbersExtractor.extract(input)).thenReturn(numbers);
+        when(filter.filter(numbers)).thenReturn(numbers);
         assertThat(testee.add(input), is(1));
     }
 
     @Test
     public void givenTwoNumbersThenSum() {
         String input = "1,2";
-        when(numbersExtractor.extract(input)).thenReturn(Arrays.asList(1, 2));
+        List<Integer> numbers = Arrays.asList(1, 2);
+        when(numbersExtractor.extract(input)).thenReturn(numbers);
+        when(filter.filter(numbers)).thenReturn(numbers);
         assertThat(testee.add(input), is(3));
     }
 
@@ -72,7 +82,18 @@ public class StringCalculatorServiceImplTest {
     @Test
     public void givenNewLineThenSum() {
         String input = "1\n2,4";
-        when(numbersExtractor.extract(input)).thenReturn(Arrays.asList(1, 2, 4));
+        List<Integer> numbers = Arrays.asList(1, 2, 4);
+        when(numbersExtractor.extract(input)).thenReturn(numbers);
+        when(filter.filter(numbers)).thenReturn(numbers);
+        assertThat(testee.add(input), is(7));
+    }
+
+    @Test
+    public void shouldNotSumNumbersBiggerThan1000() {
+        String input = "1,2,4,1001";
+        List<Integer> numbers = Arrays.asList(1, 2, 4, 1001);
+        when(numbersExtractor.extract(anyString())).thenReturn(numbers);
+        when(filter.filter(numbers)).thenReturn(Arrays.asList(1, 2, 4));
         assertThat(testee.add(input), is(7));
     }
 
@@ -82,19 +103,14 @@ public class StringCalculatorServiceImplTest {
         testee.add("1,\n");
     }
 
-    /*
-        @Test
-        public void givenNewDelimiterThenSum() {
-            String newDelimiter= "//;\n";
-            assertThat(testee.add(newDelimiter+"2;1"),is(3));
-        }
-    */
+
     private void assertSum(String input, int result) {
         List<Integer> numbers = new ArrayList<>(input.length());
         for (String number : input.split(",")) {
             numbers.add(Integer.valueOf(number));
         }
         when(numbersExtractor.extract(input)).thenReturn(numbers);
+        when(filter.filter(numbers)).thenReturn(numbers);
         assertThat(testee.add(input), is(result));
     }
 }

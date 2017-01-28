@@ -1,7 +1,8 @@
 package com.calculator.extractors;
 
-import com.calculator.extractors.delimiter.Delimiter;
-import com.calculator.extractors.delimiter.DelimiterExtractorResult;
+import com.calculator.delimiters.Delimiter;
+import com.calculator.delimiters.DelimiterExtractorResult;
+import com.calculator.delimiters.DelimiterFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,16 +12,17 @@ import java.util.List;
 @Component
 public class NumbersExtractorImpl implements NumbersExtractor {
     private static final String DELIMITER = "&";
-    private Delimiter delimiter;
 
+    private DelimiterFactory delimiterFactory;
     @Autowired
-    public NumbersExtractorImpl(Delimiter delimiter) {
-        this.delimiter = delimiter;
+    public NumbersExtractorImpl(DelimiterFactory delimiterFactory) {
+        this.delimiterFactory = delimiterFactory;
     }
 
     @Override
     public List<Integer> extract(String str) {
-
+        //TODO try to refactor
+        Delimiter delimiter = delimiterFactory.getDelimiter(str);
         DelimiterExtractorResult delResult = delimiter.extract(str);
 
         String strFormattedWithOneDelimiter = formatStringWithOneDelimiter(delResult);
@@ -28,12 +30,12 @@ public class NumbersExtractorImpl implements NumbersExtractor {
         return convertToInteger(strFormattedWithOneDelimiter.split(DELIMITER));
     }
 
-    private String formatStringWithOneDelimiter(DelimiterExtractorResult delResult) {
+    private String formatStringWithOneDelimiter(DelimiterExtractorResult delimiterResult) {
 
-        String numbersDelimited= delResult.getCleanString();
+        String numbersDelimited = delimiterResult.getCleanString();
 
         String numbersWithOneDelimiter = "";
-        for (String delimiter : delResult.getDelimiters()) {
+        for (String delimiter : delimiterResult.getDelimiters()) {
             numbersWithOneDelimiter = numbersDelimited.replace(delimiter, DELIMITER);
             numbersDelimited = numbersWithOneDelimiter;
         }
