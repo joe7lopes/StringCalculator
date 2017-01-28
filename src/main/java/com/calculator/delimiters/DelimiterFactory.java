@@ -9,13 +9,9 @@ import java.util.regex.Pattern;
 @Component
 public class DelimiterFactory {
 
-    private SimpleDelimiter simpleDelimiter;
-    private SingleOptionalDelimiter singleOptionalDelimiter;
-    private MultipleOptionalDelimiter multipleOptionalDelimiter;
-
-
-    public DelimiterFactory() {
-    }
+    private final SimpleDelimiter simpleDelimiter;
+    private final SingleOptionalDelimiter singleOptionalDelimiter;
+    private final MultipleOptionalDelimiter multipleOptionalDelimiter;
 
     @Autowired
     public DelimiterFactory(SimpleDelimiter simpleDelimiter, SingleOptionalDelimiter singleOptionalDelimiter, MultipleOptionalDelimiter multipleOptionalDelimiter) {

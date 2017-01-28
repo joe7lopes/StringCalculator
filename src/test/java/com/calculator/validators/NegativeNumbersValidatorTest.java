@@ -8,12 +8,14 @@ import org.junit.rules.ExpectedException;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.calculator.validators.NumbersValidator.NEGATIVES_NOT_ALLOWED;
+
 public class NegativeNumbersValidatorTest {
 
     private NegativeNumbersValidator testee;
 
     @Rule
-    public ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -24,7 +26,7 @@ public class NegativeNumbersValidatorTest {
     public void givenOneNegativeNumberThenException() {
         List<Integer> numbers = Arrays.asList(1, 2, -3, 0);
         exception.expect(NegativeNumbersValidator.NegativeNumbersException.class);
-        exception.expectMessage("Negatives not allowed -3");
+        exception.expectMessage(NEGATIVES_NOT_ALLOWED+"-3");
         testee.validate(numbers);
     }
 
@@ -32,7 +34,7 @@ public class NegativeNumbersValidatorTest {
     public void givenTwoNegativeNumberThenException() {
         List<Integer> numbers = Arrays.asList(1, -2, -3, 0, -102);
         exception.expect(NegativeNumbersValidator.NegativeNumbersException.class);
-        exception.expectMessage("Negatives not allowed -2 -3 -102");
+        exception.expectMessage(NEGATIVES_NOT_ALLOWED+"-2 -3 -102");
         testee.validate(numbers);
     }
 

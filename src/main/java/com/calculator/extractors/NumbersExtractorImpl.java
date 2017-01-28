@@ -13,7 +13,7 @@ import java.util.List;
 public class NumbersExtractorImpl implements NumbersExtractor {
     private static final String DELIMITER = "&";
 
-    private DelimiterFactory delimiterFactory;
+    private final DelimiterFactory delimiterFactory;
     @Autowired
     public NumbersExtractorImpl(DelimiterFactory delimiterFactory) {
         this.delimiterFactory = delimiterFactory;

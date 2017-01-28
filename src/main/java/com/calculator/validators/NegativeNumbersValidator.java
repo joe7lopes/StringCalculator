@@ -5,8 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 @Component
-class NegativeNumbersValidator  implements NumbersValidator{
-    private static final String NEGATIVES_NOT_ALLOWED = "Negatives not allowed ";
+public class NegativeNumbersValidator  implements NumbersValidator{
 
     @Override
     public void validate(List<Integer> numbers) {
@@ -28,8 +27,7 @@ class NegativeNumbersValidator  implements NumbersValidator{
         }
         return negativeNumbersStr;
     }
-
-    static class NegativeNumbersException extends RuntimeException {
+    public static class NegativeNumbersException extends RuntimeException {
 
         NegativeNumbersException(String message) {
             super(message);
