@@ -7,10 +7,10 @@ import static java.util.Collections.singletonList;
 class SimpleDelimiter implements Delimiter {
 
     @Override
-    public DelimiterExtractorResult extract(String input) {
+    public DelimiterResult extract(String input) {
 
-        String cleanInput = input.replace("\n", ",");
+        String inputWithoutDelimiterPrefix = input.replace("\n", ",");
 
-        return new DelimiterExtractorResult(singletonList(","), cleanInput);
+        return new DelimiterResult(singletonList(","), inputWithoutDelimiterPrefix);
     }
 }

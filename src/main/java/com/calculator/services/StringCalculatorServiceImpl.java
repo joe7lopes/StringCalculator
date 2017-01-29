@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StringCalculatorServiceImpl implements StringCalculatorService {
+class StringCalculatorServiceImpl implements StringCalculatorService {
 
     private final NumbersExtractor numbersExtractor;
     private final NumbersValidator numbersValidator;
@@ -32,12 +32,10 @@ public class StringCalculatorServiceImpl implements StringCalculatorService {
     }
 
     private int processSum(String input) {
-        int result = 0;
         List<Integer> numbers = numbersExtractor.extract(input);
         numbersValidator.validate(numbers);
         numbers = numbersFilter.filter(numbers);
-        result = sum(numbers);
-        return result;
+        return sum(numbers);
     }
 
     private int sum(List<Integer> numbers) {

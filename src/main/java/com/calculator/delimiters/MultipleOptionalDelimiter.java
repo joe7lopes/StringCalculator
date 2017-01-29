@@ -13,18 +13,18 @@ class MultipleOptionalDelimiter implements Delimiter {
     private static final String MATCH_BETWEEN_BRACKETS_REGEX = "(?<=\\[)([^\\]]+)(?=\\])";
 
     @Override
-    public DelimiterExtractorResult extract(String input) {
+    public DelimiterResult extract(String input) {
 
         Pattern p = Pattern.compile(MULTIPLE_DELIMITER_REGEX);
         Matcher m = p.matcher(input);
         List<String> delimiters = new ArrayList<>();
-        String clearInput = "";
+        String inputWithoutDelimiterPrefix = "";
         if (m.matches()) {
             delimiters = getDelimiters(m.group(1));
-            clearInput = m.group(2);
+            inputWithoutDelimiterPrefix = m.group(2);
         }
 
-        return new DelimiterExtractorResult(delimiters, clearInput);
+        return new DelimiterResult(delimiters, inputWithoutDelimiterPrefix);
     }
 
     private List<String> getDelimiters(String str) {

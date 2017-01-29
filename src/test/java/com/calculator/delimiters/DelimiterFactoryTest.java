@@ -42,4 +42,10 @@ public class DelimiterFactoryTest {
         assertThat(testee.getDelimiter(input), instanceOf(MultipleOptionalDelimiter.class));
     }
 
+    @Test
+    public void givenDelimiterOfAnyLenghtThenReturnMultipleOptionalDelimiter() {
+        String input = "//[***]\n1***2***3";
+        assertThat(testee.getDelimiter(input), instanceOf(MultipleOptionalDelimiter.class));
+    }
+
 }

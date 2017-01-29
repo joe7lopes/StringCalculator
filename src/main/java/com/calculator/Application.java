@@ -25,15 +25,17 @@ public class Application implements CommandLineRunner {
         System.out.println("Enter the value: \n");
         String input;
         Scanner scanner = new Scanner(System.in);
-
         while (scanner.hasNext()) {
             input = scanner.next();
             //Needed bcs of input from console.
             String input2 = input.replaceAll("\\\\n", "\n");
             try {
-                System.out.println(stringCalculatorService.add(input2));
+                System.out.println("Result: "+stringCalculatorService.add(input2));
             } catch (NegativeNumbersValidator.NegativeNumbersException exception) {
                 System.out.println(exception.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Invalid input");
             }
         }
         scanner.close();

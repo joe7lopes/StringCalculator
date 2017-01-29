@@ -12,9 +12,8 @@ class SingleOptionalDelimiter implements Delimiter {
 
     private static final String SINGLE_OPTIONAL_DELIMITER_REGEX = "^//(.+)\\n(.*)";
 
-    //TODO
     @Override
-    public DelimiterExtractorResult extract(String input) {
+    public DelimiterResult extract(String input) {
         Pattern p = Pattern.compile(SINGLE_OPTIONAL_DELIMITER_REGEX);
         Matcher m = p.matcher(input);
         String delimiter = "";
@@ -23,6 +22,6 @@ class SingleOptionalDelimiter implements Delimiter {
             delimiter = m.group(1);
             inputWithoutDelimiter = m.group(2);
         }
-        return new DelimiterExtractorResult(singletonList(delimiter), inputWithoutDelimiter);
+        return new DelimiterResult(singletonList(delimiter), inputWithoutDelimiter);
     }
 }

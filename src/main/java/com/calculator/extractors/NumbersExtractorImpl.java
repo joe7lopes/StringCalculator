@@ -1,7 +1,7 @@
 package com.calculator.extractors;
 
 import com.calculator.delimiters.Delimiter;
-import com.calculator.delimiters.DelimiterExtractorResult;
+import com.calculator.delimiters.DelimiterResult;
 import com.calculator.delimiters.DelimiterFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 public class NumbersExtractorImpl implements NumbersExtractor {
-    private static final String DELIMITER = "&";
+    private static final String DELIMITER = ",";
 
     private final DelimiterFactory delimiterFactory;
     @Autowired
@@ -20,32 +20,32 @@ public class NumbersExtractorImpl implements NumbersExtractor {
     }
 
     @Override
-    public List<Integer> extract(String str) {
-        //TODO try to refactor
-        Delimiter delimiter = delimiterFactory.getDelimiter(str);
-        DelimiterExtractorResult delResult = delimiter.extract(str);
+    public List<Integer> extract(String input) {
+        Delimiter delimiter = delimiterFactory.getDelimiter(input);
+        DelimiterResult delResult = delimiter.extract(input);
 
-        String strFormattedWithOneDelimiter = formatStringWithOneDelimiter(delResult);
+        String inputFormattedWithOneDelimiter = formatStringWithOneDelimiter(delResult);
 
-        return convertToInteger(strFormattedWithOneDelimiter.split(DELIMITER));
+        return convertToInteger(inputFormattedWithOneDelimiter);
     }
 
-    private String formatStringWithOneDelimiter(DelimiterExtractorResult delimiterResult) {
+    private String formatStringWithOneDelimiter(DelimiterResult delimiterResult) {
 
-        String numbersDelimited = delimiterResult.getCleanString();
+        String numbers = delimiterResult.getInputWithoutDelimiterPrefix();
 
         String numbersWithOneDelimiter = "";
         for (String delimiter : delimiterResult.getDelimiters()) {
-            numbersWithOneDelimiter = numbersDelimited.replace(delimiter, DELIMITER);
-            numbersDelimited = numbersWithOneDelimiter;
+            numbersWithOneDelimiter = numbers.replace(delimiter, DELIMITER);
+            numbers = numbersWithOneDelimiter;
         }
         return numbersWithOneDelimiter;
     }
 
 
-    private List<Integer> convertToInteger(String[] numbersArr) {
+    private List<Integer> convertToInteger(String input) {
+        String[] inputNumbers=input.split(DELIMITER);
         List<Integer> numbers = new ArrayList<>();
-        for (String numberStr : numbersArr) {
+        for (String numberStr : inputNumbers) {
             numbers.add(Integer.valueOf(numberStr));
         }
         return numbers;

@@ -6,8 +6,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class MultipleOptionalDelimiterTest {
 
@@ -21,19 +22,24 @@ public class MultipleOptionalDelimiterTest {
     @Test
     public void shouldAllowMultipleDelimiters() {
         String input = "//[*][%]\n1*2%3";
-        assertNewDelimiters(input,"1*2%3", Arrays.asList("*","%"));
+        assertDelimiters(input, "1*2%3", Arrays.asList("*", "%"));
     }
 
     @Test
     public void shouldAllowMultipleDelimitersOfAnyLength() {
         String input = "//[***][%]\n1***2%3";
-        assertNewDelimiters(input,"1***2%3", Arrays.asList("***","%"));
+        assertDelimiters(input, "1***2%3", Arrays.asList("***", "%"));
     }
-    
 
-    private void assertNewDelimiters(String input, String cleanStr, List<String> delimiter) {
-        DelimiterExtractorResult result = new DelimiterExtractorResult(delimiter, cleanStr);
+    @Test
+    public void shouldAllowDelimitersOfAnyLength() {
+        String input = "//[***]\n1***2***3";
+        assertDelimiters(input, "1***2***3", singletonList("***"));
+    }
+
+    private void assertDelimiters(String input, String cleanStr, List<String> delimiter) {
+        DelimiterResult result = new DelimiterResult(delimiter, cleanStr);
         assertThat(testee.extract(input), equalTo(result));
     }
-    
+
 }

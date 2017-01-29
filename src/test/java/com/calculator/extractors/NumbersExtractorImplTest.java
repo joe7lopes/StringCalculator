@@ -1,7 +1,7 @@
 package com.calculator.extractors;
 
 import com.calculator.delimiters.Delimiter;
-import com.calculator.delimiters.DelimiterExtractorResult;
+import com.calculator.delimiters.DelimiterResult;
 import com.calculator.delimiters.DelimiterFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,17 +36,17 @@ public class NumbersExtractorImplTest {
     @Test
     public void givenTwoNumbersThenReturn() {
         String input = "1,2";
-        DelimiterExtractorResult delimiterExtractorResult = new DelimiterExtractorResult(singletonList(","), "1,2");
-        when(delimiter.extract(input)).thenReturn(delimiterExtractorResult);
+        DelimiterResult delimiterResult = new DelimiterResult(singletonList(","), "1,2");
+        when(delimiter.extract(input)).thenReturn(delimiterResult);
         assertThat(testee.extract(input), is(Arrays.asList(1, 2)));
     }
 
     @Test
     public void givenOneDelimiterThenReturnNumbersAsInteger() {
         String input = "//;\n1;2";
-        DelimiterExtractorResult delimiterExtractorResult = new DelimiterExtractorResult(singletonList(";"), "1;2");
+        DelimiterResult delimiterResult = new DelimiterResult(singletonList(";"), "1;2");
 
-        when(delimiter.extract(input)).thenReturn(delimiterExtractorResult);
+        when(delimiter.extract(input)).thenReturn(delimiterResult);
 
         assertThat(testee.extract(input), is(Arrays.asList(1, 2)));
     }
@@ -54,9 +54,9 @@ public class NumbersExtractorImplTest {
     @Test
     public void givenMultipleDelimitersThenReturnNumbersAsInteger() {
         String input = "//[*][%]\n1*2%3";
-        DelimiterExtractorResult delimiterExtractorResult = new DelimiterExtractorResult(Arrays.asList("*", "%"), "1*2%3");
+        DelimiterResult delimiterResult = new DelimiterResult(Arrays.asList("*", "%"), "1*2%3");
 
-        when(delimiter.extract(input)).thenReturn(delimiterExtractorResult);
+        when(delimiter.extract(input)).thenReturn(delimiterResult);
 
         assertThat(testee.extract(input), is(Arrays.asList(1, 2, 3)));
     }

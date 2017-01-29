@@ -3,9 +3,6 @@ package com.calculator.delimiters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Component
 public class DelimiterFactory {
 
@@ -30,23 +27,11 @@ public class DelimiterFactory {
         return delimiter;
     }
 
-
     private Delimiter getOptionalDelimiter(String criteria) {
-        int numberOfMatches = getNumberOfMatches(criteria);
-        if (numberOfMatches > 1) {
+        if (criteria.startsWith("//[")) {
             return multipleOptionalDelimiter;
         }
         return singleOptionalDelimiter;
     }
 
-    private int getNumberOfMatches(String criteria) {
-        Pattern p = Pattern.compile("(?<=\\[)([^\\]]+)(?=\\])");
-        Matcher m = p.matcher(criteria);
-        int count = 0;
-        while (m.find()) {
-            count++;
-        }
-
-        return count;
-    }
 }

@@ -3,7 +3,6 @@ package com.calculator.delimiters;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -30,7 +29,7 @@ public class SingleOptionalDelimiterTest {
     }
 
     private void assertNewDelimiter(String input, String cleanStr, String delimiter) {
-        DelimiterExtractorResult result = new DelimiterExtractorResult(Collections.singletonList(delimiter), cleanStr);
+        DelimiterResult result = new DelimiterResult(Collections.singletonList(delimiter), cleanStr);
         assertThat(testee.extract(input), equalTo(result));
     }
 
