@@ -1,8 +1,8 @@
 package com.calculator.extractors;
 
 import com.calculator.delimiters.Delimiter;
-import com.calculator.delimiters.DelimiterResult;
 import com.calculator.delimiters.DelimiterFactory;
+import com.calculator.delimiters.DelimiterResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +14,7 @@ public class NumbersExtractorImpl implements NumbersExtractor {
     private static final String DELIMITER = ",";
 
     private final DelimiterFactory delimiterFactory;
+
     @Autowired
     public NumbersExtractorImpl(DelimiterFactory delimiterFactory) {
         this.delimiterFactory = delimiterFactory;
@@ -43,7 +44,7 @@ public class NumbersExtractorImpl implements NumbersExtractor {
 
 
     private List<Integer> convertToInteger(String input) {
-        String[] inputNumbers=input.split(DELIMITER);
+        String[] inputNumbers = input.split(DELIMITER);
         List<Integer> numbers = new ArrayList<>();
         for (String numberStr : inputNumbers) {
             numbers.add(Integer.valueOf(numberStr));
